@@ -7,7 +7,15 @@ from moviepy.editor import VideoFileClip
 from pydub import AudioSegment
 import speech_recognition as sr
 import openai
+import os
+from dotenv import load_dotenv
 
+# this loads the env file 
+load_dotenv()
+
+# keeping this at a global level will make them easier to use
+openai.organization = os.getenv('openAi_org')
+openai.api_key = os.getenv('openAi_key')
 
 # Create your views here.
 class VideoToText(APIView):
@@ -37,7 +45,6 @@ class VideoToText(APIView):
 
         # Perform speech-to-text conversion
         text = self.speech_to_text(audio_file)
-        openai.api_key = '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'  # Replace with your actual OpenAI API key
 
         prompt = "what is this about:\n\n" + "Big O Expression"
         response = openai.Completion.create(
